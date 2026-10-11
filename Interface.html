@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research #4 UI Design - IoT Solar Lighting System (EARIST CpE)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="h-full font-sans text-slate-100 flex flex-col antialiased">
+
+    <!-- ========================================== -->
+    <!-- SCREEN 1: USER AUTHENTICATION / LOGIN SCREEN -->
+    <!-- Template Section IX: Primary User - Admin / Staff -->
+    <!-- ========================================== -->
+    <div id="screen-1-login" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950 p-4">
+        <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8">
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-500 mb-3 border border-amber-500/20 shadow-lg shadow-amber-500/5">
+                    <i class="fa-solid fa-solar-panel text-3xl"></i>
+                </div>
+                <h1 class="text-xl font-bold text-white uppercase tracking-wider">EARIST CpE Department</h1>
+                <p class="text-xs text-slate-400 mt-1">IoT-Based Automatic Solar-Powered Lighting System</p>
+                <span class="inline-block mt-3 px-2.5 py-0.5 text-[10px] font-mono text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full">Section IX: Screen 1 – User Login</span>
+            </div>
+
+            <form id="login-form" class="space-y-4" onsubmit="handleLogin(event)">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">User Account / Username</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+                            <i class="fa-solid fa-user-shield text-xs"></i>
+                        </span>
+                        <input type="text" id="username" required value="admin_cpe" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+                            <i class="fa-solid fa-key text-xs"></i>
+                        </span>
+                        <input type="password" id="password" required autocomplete="current-password" placeholder="Enter password" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">User Role Access</label>
+                    <select id="user-role" class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all">
+                        <option value="Administrator">Administrator (Faculty / IT Administrator)</option>
+                        <option value="Maintenance Staff">Maintenance / Laboratory Staff</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-lg text-sm transition-all duration-150 shadow-lg shadow-amber-500/20 active:scale-[0.99] mt-2">
+                    <i class="fa-solid fa-right-to-bracket mr-2"></i> Access Monitoring Dashboard
+                </button>
+            </form>
+            <p class="text-[10px] text-slate-500 text-center mt-3">Demo only: login details are not authenticated or sent to a server.</p>
+
+            <div class="mt-6 pt-4 border-t border-slate-800 text-center text-[11px] text-slate-500 space-y-1">
+                <p>Eulogio "Amang" Rodriguez Institute of Science and Technology</p>
+                <p class="font-mono text-[10px] text-slate-600">Research #4 System Interface Design • CpE 4A Group #1</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MAIN APPLICATION CONTAINER (POST-LOGIN) -->
+    <!-- ========================================== -->
+    <div id="main-app" class="hidden flex-col min-h-screen">
+
+        <!-- GLOBAL HEADER NAVIGATION BAR -->
+        <header class="bg-slate-950 border-b border-slate-800 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                            <i class="fa-solid fa-lightbulb text-lg"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 class="text-sm font-bold text-white leading-none">IoT Solar Lighting Dashboard</h2>
+                                <span class="text-[10px] bg-slate-800 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded font-mono">Node #01</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">EARIST Manila • CpE Main Corridor / Laboratory Section</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="hidden md:flex flex-col text-right">
+                            <span id="current-user-display" class="text-xs font-semibold text-amber-400">admin_cpe (Administrator)</span>
+                            <span id="clock-display" class="text-[10px] text-slate-400 font-mono">Local time</span>
+                        </div>
+                        <a href="Prototype.html" target="_blank" rel="noopener" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-lg border border-slate-700 transition-colors">
+                            <i class="fa-solid fa-cube mr-1"></i> Open 3D Twin
+                        </a>
+                        <button onclick="handleLogout()" class="px-3 py-1.5 bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-300 text-xs font-medium rounded-lg border border-slate-700 transition-colors">
+                            <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- FR-10: WI-FI CONNECTIVITY WARNING BANNER -->
+        <div id="wifi-warning-banner" class="hidden bg-red-500/10 border-b border-red-500/30 px-4 py-2.5 text-red-400 text-xs font-medium">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation text-base animate-pulse"></i>
+                    <span><strong>CONNECTIVITY WARNING (FR-10):</strong> ESP32 microcontroller is disconnected from Wi-Fi. Displaying last known offline telemetry. Manual override commands are paused.</span>
+                </div>
+                <button onclick="toggleWifiSimulation()" class="underline hover:text-red-300 text-[11px] font-semibold">Re-connect (Simulate Online)</button>
+            </div>
+        </div>
+
+        <!-- MAIN BODY CONTENT -->
+        <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+            <!-- NAVIGATION TABS FOR RESEARCH #4 SCREEN MOCKUPS -->
+            <div class="flex items-center justify-between border-b border-slate-800 text-sm font-medium text-slate-400 overflow-x-auto">
+                <div class="flex shrink-0">
+                    <button onclick="switchTab('screen-2-monitoring')" id="tab-screen-2-monitoring" class="py-3 px-4 text-amber-500 border-b-2 border-amber-500 flex items-center gap-2 transition-colors">
+                        <i class="fa-solid fa-gauge-high"></i> Screen 2: Monitoring Dashboard
+                    </button>
+                    <button onclick="switchTab('screen-3-override')" id="tab-screen-3-override" class="py-3 px-4 hover:text-slate-200 border-b-2 border-transparent flex items-center gap-2 transition-colors">
+                        <i class="fa-solid fa-sliders"></i> Screen 3: Manual Control
+                    </button>
+                    <button onclick="switchTab('screen-4-logs')" id="tab-screen-4-logs" class="py-3 px-4 hover:text-slate-200 border-b-2 border-transparent flex items-center gap-2 transition-colors">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Screen 4: Command Logs
+                    </button>
+                </div>
+                <div class="hidden lg:flex items-center gap-2 text-[11px] text-slate-400">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>Shared Local Sync: <strong id="last-updated-text" class="text-slate-200 font-mono">Ready</strong></span>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SCREEN 2: TELEMETRY & MONITORING DASHBOARD -->
+            <!-- Functional Requirements: FR-01, FR-02, FR-04, FR-05, FR-07, FR-08, FR-10 -->
+            <!-- ========================================== -->
+            <div id="screen-2-monitoring" class="space-y-6">
+                <!-- TOP TELEMETRY CARDS GRID -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+
+                    <!-- LED LIGHT STATUS (FR-01, FR-02, FR-04) -->
+                    <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-4 hover:border-slate-700 transition-colors">
+                        <div class="flex items-center justify-between text-slate-400 mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider">LED Light Status</span>
+                            <i id="led-icon" class="fa-solid fa-lightbulb text-lg text-amber-400"></i>
+                        </div>
+                        <div class="flex items-baseline gap-2">
+                            <span id="led-status-text" class="text-2xl font-bold text-amber-400">ON</span>
+                            <span id="led-mode-badge" class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-medium">Automatic</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-2">GPIO26 Switching Output Signal</p>
+                    </div>
+
+                    <!-- AMBIENT LIGHT SENSOR (LDR) -->
+                    <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-4 hover:border-slate-700 transition-colors">
+                        <div class="flex items-center justify-between text-slate-400 mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider">Ambient Light</span>
+                            <i id="ldr-icon" class="fa-solid fa-moon text-lg text-indigo-400"></i>
+                        </div>
+                        <div class="flex items-baseline gap-2">
+                            <span id="ambient-status-text" class="text-2xl font-bold text-slate-100">DARK</span>
+                            <span class="text-[10px] text-slate-400">(LDR Module)</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-2">GPIO34 ADC1 Value: <span id="ldr-adc-value" class="text-slate-200 font-mono">820</span></p>
+                    </div>
+
+                    <!-- SOLAR PANEL CHARGING STATUS (FR-07) -->
+                    <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-4 hover:border-slate-700 transition-colors">
+                        <div class="flex items-center justify-between text-slate-400 mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider">Solar Charging</span>
+                            <i class="fa-solid fa-sun text-lg text-amber-400"></i>
+                        </div>
+                        <div class="flex items-baseline gap-2">
+                            <span id="solar-status-text" class="text-xl font-bold text-emerald-400">CHARGING</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-2">6V Panel Harvest: <span id="solar-harvest-text" class="text-emerald-400 font-semibold">Active</span></p>
+                    </div>
+
+                    <!-- ACTIVE POWER SOURCE (FR-08) -->
+                    <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-4 hover:border-slate-700 transition-colors">
+                        <div class="flex items-center justify-between text-slate-400 mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider">Active Power Source</span>
+                            <i class="fa-solid fa-bolt text-lg text-emerald-400"></i>
+                        </div>
+                        <div class="flex items-baseline gap-2">
+                            <span id="power-source-text" class="text-sm font-bold text-emerald-400">SOLAR-BATTERY</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-2">AC Adapter Switch: <span id="ac-standby-text" class="text-slate-400">Standby (&gt;20%)</span></p>
+                    </div>
+
+                    <!-- IOT / WI-FI CONNECTIVITY (FR-03, FR-10) -->
+                    <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-4 hover:border-slate-700 transition-colors">
+                        <div class="flex items-center justify-between text-slate-400 mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider">IoT Network</span>
+                            <i id="wifi-icon" class="fa-solid fa-wifi text-lg text-emerald-400"></i>
+                        </div>
+                        <div class="flex items-baseline gap-2">
+                            <span id="wifi-status-text" class="text-sm font-bold text-emerald-400">CONNECTED</span>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-[10px] text-slate-400">Shared Local Sync</span>
+                            <button onclick="toggleWifiSimulation()" class="text-[9px] text-amber-400 hover:underline">Simulate Outage</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BATTERY DETAILED MONITORING CARD (FR-05) -->
+                <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                        <div>
+                            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-battery-three-quarters text-emerald-400"></i>
+                                18650 Rechargeable Li-ion Battery Telemetry (GPIO35 ADC1)
+                            </h3>
+                            <p class="text-xs text-slate-400">Voltage Divider Scale Monitoring & Automatic AC Switching Trigger</p>
+                        </div>
+                        <div class="text-right">
+                            <span id="battery-percentage-text" class="text-3xl font-extrabold text-white">82%</span>
+                            <span id="battery-voltage-text" class="text-xs text-slate-400 block font-mono">3.98V / 4.20V</span>
+                        </div>
+                    </div>
+
+                    <!-- VISUAL PROGRESS BAR -->
+                    <div class="w-full bg-slate-950 rounded-full h-4 p-0.5 border border-slate-800 overflow-hidden">
+                        <div id="battery-bar" class="bg-gradient-to-r from-emerald-500 to-green-400 h-full rounded-full transition-all duration-500" style="width: 82%;"></div>
+                    </div>
+
+                    <div class="flex justify-between text-[11px] text-slate-400 mt-2 font-mono">
+                        <span>0% (Cut-off)</span>
+                        <span class="text-amber-400">AC Switching Threshold (20%)</span>
+                        <span>100% (Full Capacity)</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-6 space-y-4">
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Live Simulation Controls</h3>
+                        <p class="text-xs text-slate-400 mt-1">Changes here synchronize with the 3D twin and any other open dashboard tab.</p>
+                    </div>
+                    <label class="block text-xs text-slate-300">
+                        <span class="flex justify-between mb-2">
+                            <span>Ambient light</span>
+                            <span id="ambient-slider-val" class="font-mono text-amber-400">0 Lux (Dark)</span>
+                        </span>
+                        <input type="range" id="ambient-slider" min="0" max="1000" value="0" step="10" oninput="updateSystemLogic()" class="w-full accent-amber-500">
+                    </label>
+                    <label class="block text-xs text-slate-300">
+                        <span class="flex justify-between mb-2">
+                            <span>Battery level</span>
+                            <span id="battery-slider-val" class="font-mono text-emerald-400">82% (3.98V)</span>
+                        </span>
+                        <input type="range" id="battery-slider" min="0" max="100" value="82" step="1" oninput="updateSystemLogic()" class="w-full accent-emerald-500">
+                    </label>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SCREEN 3: REMOTE MANUAL OVERRIDE CONTROL -->
+            <!-- Functional Requirements: FR-06 -->
+            <!-- ========================================== -->
+            <div id="screen-3-override" class="hidden space-y-6">
+                <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-6 max-w-2xl mx-auto shadow-xl">
+                    <div class="text-center mb-6">
+                        <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-amber-500/10 text-amber-500 mb-2 border border-amber-500/20">
+                            <i class="fa-solid fa-hand text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Remote Manual Lighting Override (FR-06)</h3>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Override commands take immediate priority over the simulated LDR threshold. Commands synchronize across the open dashboard and 3D twin pages.
+                        </p>
+                    </div>
+
+                    <div id="override-alert" class="hidden p-3 rounded-lg text-xs font-medium mb-4"></div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- FORCE ON BUTTON -->
+                        <button onclick="sendOverrideCommand('FORCE_ON')" class="p-5 bg-slate-900 hover:bg-amber-500/10 border border-slate-700 hover:border-amber-500/50 rounded-xl text-center group transition-all">
+                            <i class="fa-solid fa-power-off text-3xl text-amber-400 mb-3 group-hover:scale-110 transition-transform"></i>
+                            <div class="font-bold text-sm text-white">Force Light ON</div>
+                            <div class="text-[10px] text-slate-400 mt-1">Manual Override ON</div>
+                        </button>
+
+                        <!-- FORCE OFF BUTTON -->
+                        <button onclick="sendOverrideCommand('FORCE_OFF')" class="p-5 bg-slate-900 hover:bg-red-500/10 border border-slate-700 hover:border-red-500/50 rounded-xl text-center group transition-all">
+                            <i class="fa-regular fa-circle-xmark text-3xl text-red-400 mb-3 group-hover:scale-110 transition-transform"></i>
+                            <div class="font-bold text-sm text-white">Force Light OFF</div>
+                            <div class="text-[10px] text-slate-400 mt-1">Manual Override OFF</div>
+                        </button>
+
+                        <!-- RETURN TO AUTOMATIC BUTTON -->
+                        <button onclick="sendOverrideCommand('AUTO')" class="p-5 bg-slate-900 hover:bg-emerald-500/10 border border-slate-700 hover:border-emerald-500/50 rounded-xl text-center group transition-all">
+                            <i class="fa-solid fa-robot text-3xl text-emerald-400 mb-3 group-hover:scale-110 transition-transform"></i>
+                            <div class="font-bold text-sm text-white">Return to Auto</div>
+                            <div class="text-[10px] text-slate-400 mt-1">Resume LDR Control</div>
+                        </button>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-center">
+                        <span class="text-[11px] text-slate-500">Current Priority Mode: <strong id="current-priority-display" class="text-amber-400">Automatic LDR Logic Active</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SCREEN 4: OVERRIDE COMMAND LOGS -->
+            <!-- Template Section IX: Entity - D2 Override Command Logs -->
+            <!-- ========================================== -->
+            <div id="screen-4-logs" class="hidden space-y-6">
+                <div class="bg-slate-800/50 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
+                    <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-list-check text-amber-500"></i>
+                                Override Command Audit Logs (D2 Database Records)
+                            </h3>
+                            <p class="text-[11px] text-slate-400">Historical trail of manual commands issued by authorized staff</p>
+                        </div>
+                        <span class="text-xs text-slate-400 font-mono bg-slate-900 border border-slate-700 px-2.5 py-1 rounded-md">Shared browser state</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800 font-mono">
+                                <tr>
+                                    <th class="p-3">Log ID</th>
+                                    <th class="p-3">User Account</th>
+                                    <th class="p-3">Command Issued</th>
+                                    <th class="p-3">Timestamp</th>
+                                    <th class="p-3">Execution Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logs-table-body" class="divide-y divide-slate-800 font-sans">
+                                <!-- Dynamically populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- GLOBAL FOOTER -->
+        <footer class="bg-slate-950 border-t border-slate-800 py-4 px-4 text-center text-xs text-slate-500 mt-auto">
+            <p>Eulogio "Amang" Rodriguez Institute of Science and Technology • College of Engineering</p>
+            <p class="text-[10px] text-slate-600 mt-0.5">CpE 4A Group #1 Capstone Research #4 System Interface Design Mockup</p>
+        </footer>
+    </div>
+
+    <!-- CLIENT-SIDE SCRIPT & INTERACTIVE SIMULATION LOGIC -->
+    <script src="system-sync.js"></script>
+    <script>
+        let currentUser = null;
+        let isWifiConnected = true;
+        let overrideMode = "AUTO";
+        let ambientLux = 0;
+        let batteryPct = 82;
+        let commandLogs = [];
+        let clockTimer = null;
+
+        function startClock() {
+            if (clockTimer !== null) return;
+            const updateClock = () => {
+                const now = new Date().toLocaleString();
+                document.getElementById('clock-display').innerText = now;
+                document.getElementById('last-updated-text').innerText = now;
+            };
+            updateClock();
+            clockTimer = setInterval(updateClock, 1000);
+        }
+
+        function updateSystemLogic() {
+            ambientLux = Number(document.getElementById('ambient-slider').value);
+            batteryPct = Number(document.getElementById('battery-slider').value);
+            SystemSync.update({ ambientLux, batteryPct });
+        }
+
+        function applySystemState(state) {
+            ambientLux = state.ambientLux;
+            batteryPct = state.batteryPct;
+            overrideMode = state.overrideMode;
+            isWifiConnected = state.isWifiConnected;
+            commandLogs = state.commandLogs;
+
+            document.getElementById('ambient-slider').value = ambientLux;
+            document.getElementById('battery-slider').value = batteryPct;
+
+            const isDark = ambientLux < 400;
+            const isCharging = ambientLux > 200;
+            const useAcBackup = batteryPct < 20;
+            const lightOn = overrideMode === "FORCE_ON" || (overrideMode === "AUTO" && isDark);
+            const voltage = (3 + (batteryPct / 100) * 1.2).toFixed(2);
+
+            document.getElementById('ambient-slider-val').innerText = `${ambientLux} Lux (${isDark ? "Dark" : "Bright"})`;
+            document.getElementById('battery-slider-val').innerText = `${batteryPct}% (${voltage}V)`;
+            document.getElementById('led-status-text').innerText = lightOn ? "ON" : "OFF";
+            document.getElementById('led-status-text').className = lightOn ? "text-2xl font-bold text-amber-400" : "text-2xl font-bold text-slate-500";
+            document.getElementById('led-mode-badge').innerText = overrideMode === "AUTO" ? "Automatic" : `Manual (${overrideMode})`;
+            document.getElementById('ambient-status-text').innerText = isDark ? "DARK" : "BRIGHT";
+            document.getElementById('ldr-adc-value').innerText = Math.round(1024 - (ambientLux / 1000) * 1024);
+            document.getElementById('solar-status-text').innerText = isCharging ? "CHARGING" : "NOT CHARGING";
+            document.getElementById('solar-harvest-text').innerText = isCharging ? "Active" : "Low Sunlight";
+            document.getElementById('power-source-text').innerText = useAcBackup ? "AC-ADAPTER" : "SOLAR-BATTERY";
+            document.getElementById('power-source-text').className = useAcBackup ? "text-sm font-bold text-amber-400" : "text-sm font-bold text-emerald-400";
+            document.getElementById('ac-standby-text').innerText = useAcBackup ? "Active (Low Battery)" : "Standby (>20%)";
+            document.getElementById('battery-percentage-text').innerText = `${batteryPct}%`;
+            document.getElementById('battery-voltage-text').innerText = `${voltage}V / 4.20V`;
+            document.getElementById('battery-bar').style.width = `${batteryPct}%`;
+            document.getElementById('current-priority-display').innerText = overrideMode === "AUTO" ? "Automatic LDR Logic Active" : `Manual Override Active (${overrideMode})`;
+            updateWifiDisplay();
+            renderLogs();
+        }
+
+        function updateWifiDisplay() {
+            const banner = document.getElementById('wifi-warning-banner');
+            const statusText = document.getElementById('wifi-status-text');
+            const wifiIcon = document.getElementById('wifi-icon');
+            banner.classList.toggle('hidden', isWifiConnected);
+            statusText.innerText = isWifiConnected ? "CONNECTED" : "DISCONNECTED";
+            statusText.className = isWifiConnected ? "text-sm font-bold text-emerald-400" : "text-sm font-bold text-red-400";
+            wifiIcon.className = isWifiConnected
+                ? "fa-solid fa-wifi text-lg text-emerald-400"
+                : "fa-solid fa-wifi text-lg text-red-400 animate-pulse";
+        }
+
+        // Login Handler (Screen 1)
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const role = document.getElementById('user-role').value;
+            if (!username) return;
+
+            currentUser = { username, role };
+            document.getElementById('current-user-display').innerText = `${username} (${role})`;
+            
+            document.getElementById('screen-1-login').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
+            document.getElementById('main-app').classList.add('flex');
+            
+            renderLogs();
+            startClock();
+        }
+
+        // Logout Handler
+        function handleLogout() {
+            currentUser = null;
+            document.getElementById('main-app').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('flex');
+            document.getElementById('screen-1-login').classList.remove('hidden');
+        }
+
+        // Screen Navigation Tab Switching
+        function switchTab(screenId) {
+            ['screen-2-monitoring', 'screen-3-override', 'screen-4-logs'].forEach(s => {
+                document.getElementById(s).classList.add('hidden');
+                document.getElementById(`tab-${s}`).classList.remove('text-amber-500', 'border-amber-500');
+                document.getElementById(`tab-${s}`).classList.add('hover:text-slate-200', 'border-transparent');
+            });
+
+            document.getElementById(screenId).classList.remove('hidden');
+            document.getElementById(`tab-${screenId}`).classList.add('text-amber-500', 'border-amber-500');
+            document.getElementById(`tab-${screenId}`).classList.remove('hover:text-slate-200', 'border-transparent');
+        }
+
+        // Wi-Fi Connection Simulation (FR-10)
+        function toggleWifiSimulation() {
+            SystemSync.update({ isWifiConnected: !isWifiConnected });
+        }
+
+        // Send Manual Override Command (FR-06)
+        function sendOverrideCommand(cmd) {
+            const alertBox = document.getElementById('override-alert');
+            if (!["FORCE_ON", "FORCE_OFF", "AUTO"].includes(cmd)) {
+                throw new Error(`Unsupported override command: ${cmd}`);
+            }
+            if (!isWifiConnected) {
+                alertBox.className = "p-3 rounded-lg text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20";
+                alertBox.innerText = "ERROR (FR-10): Command failed to transmit. ESP32 Wi-Fi connection is offline.";
+                alertBox.classList.remove('hidden');
+                return;
+            }
+
+            const newLog = {
+                id: `CMD-${Date.now()}`,
+                user: currentUser ? currentUser.username : "unknown",
+                command: cmd,
+                time: new Date().toLocaleString(),
+                status: "EXECUTED"
+            };
+            SystemSync.update({ overrideMode: cmd, commandLogs: [newLog, ...commandLogs] });
+
+            alertBox.className = "p-3 rounded-lg text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+            alertBox.innerText = `SUCCESS: '${cmd}' applied to the shared dashboard simulation.`;
+            alertBox.classList.remove('hidden');
+        }
+
+        // Render Logs Table (Screen 4)
+        function renderLogs() {
+            const tbody = document.getElementById('logs-table-body');
+            tbody.innerHTML = commandLogs.map(log => `
+                <tr class="hover:bg-slate-800/30 transition-colors">
+                    <td class="p-3 font-mono text-amber-400 font-semibold">${SystemSync.escapeHtml(log.id)}</td>
+                    <td class="p-3 font-medium text-slate-200">${SystemSync.escapeHtml(log.user)}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] bg-slate-900 border border-slate-700 font-mono text-slate-300">${SystemSync.escapeHtml(log.command)}</span></td>
+                    <td class="p-3 text-slate-400 font-mono">${SystemSync.escapeHtml(log.time)}</td>
+                    <td class="p-3"><span class="text-emerald-400 font-semibold flex items-center gap-1"><i class="fa-solid fa-circle-check text-[10px]"></i> ${SystemSync.escapeHtml(log.status)}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        SystemSync.subscribe(applySystemState);
+    </script>
+</body>
+</html>

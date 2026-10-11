@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrated 3D Twin & UI Dashboard - IoT Solar Lighting System (EARIST CpE)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Three.js Library & OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body class="h-full font-sans text-slate-100 flex flex-col overflow-x-hidden antialiased">
+
+    <!-- LOGIN SCREEN (Screen 1) -->
+    <div id="screen-1-login" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950 p-4">
+        <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8">
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-500 mb-3 border border-amber-500/20 shadow-lg shadow-amber-500/5">
+                    <i class="fa-solid fa-cube text-3xl"></i>
+                </div>
+                <h1 class="text-xl font-bold text-white uppercase tracking-wider">EARIST CpE Department</h1>
+                <p class="text-xs text-slate-400 mt-1">IoT-Based Automatic Solar-Powered Lighting System</p>
+                <span class="inline-block mt-3 px-2.5 py-0.5 text-[10px] font-mono text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full">Interactive 3D Digital Twin & UI Dashboard</span>
+            </div>
+
+            <form id="login-form" class="space-y-4" onsubmit="handleLogin(event)">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">User Account / Username</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+                            <i class="fa-solid fa-user-shield text-xs"></i>
+                        </span>
+                        <input type="text" id="username" required value="admin_cpe" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-amber-500 transition-all">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+                            <i class="fa-solid fa-key text-xs"></i>
+                        </span>
+                        <input type="password" id="password" required autocomplete="current-password" placeholder="Enter password" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-amber-500 transition-all">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">User Role Access</label>
+                    <select id="user-role" class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-amber-500 transition-all">
+                        <option value="Administrator">Administrator (Faculty / IT Administrator)</option>
+                        <option value="Maintenance Staff">Maintenance / Laboratory Staff</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-lg text-sm transition-all duration-150 shadow-lg shadow-amber-500/20 mt-2">
+                    <i class="fa-solid fa-right-to-bracket mr-2"></i> Access Integrated Twin & Dashboard
+                </button>
+            </form>
+            <p class="text-[10px] text-slate-500 text-center mt-3">Demo only: login details are not authenticated or sent to a server.</p>
+
+            <div class="mt-6 pt-4 border-t border-slate-800 text-center text-[11px] text-slate-500 space-y-1">
+                <p>Eulogio "Amang" Rodriguez Institute of Science and Technology</p>
+                <p class="font-mono text-[10px] text-slate-600">Research #4 System Interface & Physical Design • CpE 4A Group #1</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APPLICATION CONTAINER (POST-LOGIN) -->
+    <div id="main-app" class="hidden flex-col min-h-screen">
+
+        <!-- GLOBAL HEADER NAVIGATION BAR -->
+        <header class="bg-slate-950 border-b border-slate-800 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                            <i class="fa-solid fa-lightbulb text-lg"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 class="text-sm font-bold text-white leading-none">IoT Solar Lighting Dashboard</h2>
+                                <span class="text-[10px] bg-slate-800 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded font-mono">Node #01</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">EARIST Manila • CpE Main Corridor / Laboratory Section</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <a href="Interface.html" target="_blank" rel="noopener" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-lg border border-slate-700 transition-colors">
+                            <i class="fa-solid fa-gauge-high mr-1"></i> Open Dashboard
+                        </a>
+                        <div class="hidden md:flex flex-col text-right">
+                            <span id="current-user-display" class="text-xs font-semibold text-amber-400">admin_cpe (Administrator)</span>
+                            <span id="clock-display" class="text-[10px] text-slate-400 font-mono">Local time</span>
+                        </div>
+                        <button onclick="handleLogout()" class="px-3 py-1.5 bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-300 text-xs font-medium rounded-lg border border-slate-700 transition-colors">
+                            <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- FR-10: WI-FI CONNECTIVITY WARNING BANNER -->
+        <div id="wifi-warning-banner" class="hidden bg-red-500/10 border-b border-red-500/30 px-4 py-2.5 text-red-400 text-xs font-medium">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation text-base animate-pulse"></i>
+                    <span><strong>CONNECTIVITY WARNING (FR-10):</strong> ESP32 disconnected from Wi-Fi. Displaying last known system status. Remote override is unavailable.</span>
+                </div>
+                <button onclick="toggleWifiSimulation()" class="underline hover:text-red-300 text-[11px] font-semibold">Re-connect (Simulate Online)</button>
+            </div>
+        </div>
+
+        <!-- MAIN SPLIT LAYOUT (3D MODEL ON LEFT, UI DASHBOARD PANELS ON RIGHT) -->
+        <div class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- LEFT COLUMN: 3D INTERACTIVE PHYSICAL PROTOTYPE VIEWPORT (5 COLS) -->
+            <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden flex flex-col h-[520px] lg:h-auto shadow-2xl relative">
+                <div class="p-3 bg-slate-950 border-b border-slate-800 flex items-center justify-between z-10">
+                    <span class="text-xs font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-cube text-amber-400"></i>
+                        3D Physical Hardware Twin
+                    </span>
+                    <button onclick="toggleExplodedView()" id="btn-explode" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded border border-slate-700 transition-colors">
+                        <i class="fa-solid fa-box-open text-amber-400 mr-1"></i> Transparent View
+                    </button>
+                </div>
+
+                <!-- WebGL Canvas Container -->
+                <div id="canvas-container" class="flex-1 w-full h-full relative cursor-grab active:cursor-grabbing">
+                    <!-- Overlay Badges -->
+                    <div class="absolute top-3 left-3 z-20 flex flex-col gap-1.5">
+                        <div class="bg-slate-950/80 backdrop-blur-md border border-slate-800 rounded-lg p-2 text-[10px]">
+                            <span class="text-slate-400 block font-semibold">3D Ambient Illumination:</span>
+                            <span id="sim-lux-badge" class="font-bold text-amber-400">0 Lux (Dark)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3D Hardware Controls Bar -->
+                <div class="p-4 bg-slate-950 border-t border-slate-800 space-y-3 z-10 text-xs">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-slate-300 font-semibold">Simulate Daylight (LDR):</span>
+                            <span id="ambient-slider-val" class="text-amber-400 font-mono font-bold">0 Lux (Dark)</span>
+                        </div>
+                        <input type="range" id="ambient-slider" min="0" max="1000" value="0" step="10" oninput="updateSystemLogic()" class="w-full accent-amber-500 bg-slate-900 rounded-lg h-1.5 cursor-pointer">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-slate-300 font-semibold">18650 Battery Voltage:</span>
+                            <span id="battery-slider-val" class="text-emerald-400 font-mono font-bold">82% (3.98V)</span>
+                        </div>
+                        <input type="range" id="battery-slider" min="0" max="100" value="82" step="1" oninput="updateSystemLogic()" class="w-full accent-emerald-500 bg-slate-900 rounded-lg h-1.5 cursor-pointer">
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: UI DASHBOARD TABS & PANELS (7 COLS) -->
+            <div class="lg:col-span-7 flex flex-col space-y-4">
+
+                <!-- TOP NAVIGATION TABS -->
+                <div class="flex items-center justify-between border-b border-slate-800 text-sm font-medium text-slate-400 overflow-x-auto">
+                    <div class="flex shrink-0">
+                        <button onclick="switchTab('screen-2-monitoring')" id="tab-screen-2-monitoring" class="py-2.5 px-3.5 text-amber-500 border-b-2 border-amber-500 flex items-center gap-2 transition-colors">
+                            <i class="fa-solid fa-gauge-high"></i> Screen 2: Monitoring
+                        </button>
+                        <button onclick="switchTab('screen-3-override')" id="tab-screen-3-override" class="py-2.5 px-3.5 hover:text-slate-200 border-b-2 border-transparent flex items-center gap-2 transition-colors">
+                            <i class="fa-solid fa-sliders"></i> Screen 3: Manual Control
+                        </button>
+                        <button onclick="switchTab('screen-4-logs')" id="tab-screen-4-logs" class="py-2.5 px-3.5 hover:text-slate-200 border-b-2 border-transparent flex items-center gap-2 transition-colors">
+                            <i class="fa-solid fa-clock-rotate-left"></i> Screen 4: Logs
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- SCREEN 2: MONITORING DASHBOARD -->
+                <!-- ========================================== -->
+                <div id="screen-2-monitoring" class="space-y-4">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+
+                        <!-- LED LIGHT STATUS -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5">
+                            <div class="flex items-center justify-between text-slate-400 mb-1.5">
+                                <span class="text-[10px] font-semibold uppercase tracking-wider">LED Light</span>
+                                <i id="led-icon" class="fa-solid fa-lightbulb text-base text-amber-400"></i>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <span id="led-status-text" class="text-xl font-bold text-amber-400">ON</span>
+                                <span id="led-mode-badge" class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-medium">Automatic</span>
+                            </div>
+                            <p class="text-[10px] text-slate-500 mt-1.5">GPIO26 Switching Signal</p>
+                        </div>
+
+                        <!-- AMBIENT LIGHT SENSOR -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5">
+                            <div class="flex items-center justify-between text-slate-400 mb-1.5">
+                                <span class="text-[10px] font-semibold uppercase tracking-wider">Ambient Light</span>
+                                <i class="fa-solid fa-moon text-base text-indigo-400"></i>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <span id="ambient-status-text" class="text-xl font-bold text-slate-100">DARK</span>
+                            </div>
+                            <p class="text-[10px] text-slate-500 mt-1.5">GPIO34 ADC: <span id="ldr-adc-value" class="text-slate-300 font-mono">820</span></p>
+                        </div>
+
+                        <!-- SOLAR CHARGING STATUS -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5">
+                            <div class="flex items-center justify-between text-slate-400 mb-1.5">
+                                <span class="text-[10px] font-semibold uppercase tracking-wider">Solar Charging</span>
+                                <i class="fa-solid fa-sun text-base text-amber-400"></i>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <span id="solar-status-text" class="text-lg font-bold text-emerald-400">CHARGING</span>
+                            </div>
+                            <p class="text-[10px] text-slate-500 mt-1.5">6V Panel: <span id="solar-harvest-text" class="text-emerald-400">Active</span></p>
+                        </div>
+
+                        <!-- ACTIVE POWER SOURCE -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5">
+                            <div class="flex items-center justify-between text-slate-400 mb-1.5">
+                                <span class="text-[10px] font-semibold uppercase tracking-wider">Power Source</span>
+                                <i class="fa-solid fa-bolt text-base text-emerald-400"></i>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <span id="power-source-text" class="text-xs font-bold text-emerald-400">SOLAR-BATTERY</span>
+                            </div>
+                            <p class="text-[10px] text-slate-500 mt-1.5">AC Backup: <span id="ac-standby-text" class="text-slate-400">Standby (&gt;20%)</span></p>
+                        </div>
+
+                        <!-- WI-FI STATUS -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5">
+                            <div class="flex items-center justify-between text-slate-400 mb-1.5">
+                                <span class="text-[10px] font-semibold uppercase tracking-wider">IoT Network</span>
+                                <i id="wifi-icon" class="fa-solid fa-wifi text-base text-emerald-400"></i>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <span id="wifi-status-text" class="text-xs font-bold text-emerald-400">CONNECTED</span>
+                            </div>
+                            <div class="flex justify-between items-center mt-1.5">
+                                <span class="text-[9px] text-slate-500">Shared Local Sync</span>
+                                <button onclick="toggleWifiSimulation()" class="text-[9px] text-amber-400 hover:underline">Outage</button>
+                            </div>
+                        </div>
+
+                        <!-- SYSTEM SYNC TIME -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5">
+                            <div class="flex items-center justify-between text-slate-400 mb-1.5">
+                                <span class="text-[10px] font-semibold uppercase tracking-wider">Last Updated</span>
+                                <i class="fa-solid fa-arrows-rotate text-emerald-400 text-xs animate-spin"></i>
+                            </div>
+                            <span id="last-updated-text" class="text-xs font-bold font-mono text-slate-200">08:40:00</span>
+                            <p class="text-[10px] text-slate-500 mt-1.5">Realtime Telemetry</p>
+                        </div>
+                    </div>
+
+                    <!-- BATTERY DETAILED TELEMETRY CARD -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-xs font-bold text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-battery-three-quarters text-emerald-400"></i>
+                                    18650 Li-ion Battery Telemetry (GPIO35 ADC1)
+                                </h3>
+                                <p class="text-[10px] text-slate-400 mt-0.5">Voltage Divider Monitoring & Automatic AC Switching Trigger</p>
+                            </div>
+                            <div class="text-right">
+                                <span id="battery-percentage-text" class="text-2xl font-extrabold text-white">82%</span>
+                                <span id="battery-voltage-text" class="text-[10px] text-slate-400 block font-mono">3.98V / 4.20V</span>
+                            </div>
+                        </div>
+
+                        <div class="w-full bg-slate-950 rounded-full h-3.5 p-0.5 border border-slate-800 overflow-hidden">
+                            <div id="battery-bar" class="bg-gradient-to-r from-emerald-500 to-green-400 h-full rounded-full transition-all duration-300" style="width: 82%;"></div>
+                        </div>
+
+                        <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+                            <span>0% (Cut-off)</span>
+                            <span class="text-amber-400">AC Switch Threshold (20%)</span>
+                            <span>100% (Full)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- SCREEN 3: MANUAL OVERRIDE CONTROL PANEL -->
+                <!-- ========================================== -->
+                <div id="screen-3-override" class="hidden space-y-4">
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-xl space-y-4">
+                        <div>
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-hand text-amber-500"></i>
+                                Remote Manual Lighting Override (FR-06)
+                            </h3>
+                            <p class="text-xs text-slate-400 mt-1">
+                                Commands override local ESP32 LDR calculations and update the physical 3D light cone in real time.
+                            </p>
+                        </div>
+
+                        <div id="override-alert" class="hidden p-3 rounded-lg text-xs font-medium"></div>
+
+                        <div class="grid grid-cols-3 gap-3">
+                            <button onclick="sendOverrideCommand('FORCE_ON')" class="p-4 bg-slate-950 hover:bg-amber-500/10 border border-slate-800 hover:border-amber-500/50 rounded-xl text-center group transition-all">
+                                <i class="fa-solid fa-power-off text-2xl text-amber-400 mb-2 group-hover:scale-110 transition-transform"></i>
+                                <div class="font-bold text-xs text-white">Force Light ON</div>
+                            </button>
+
+                            <button onclick="sendOverrideCommand('FORCE_OFF')" class="p-4 bg-slate-950 hover:bg-red-500/10 border border-slate-800 hover:border-red-500/50 rounded-xl text-center group transition-all">
+                                <i class="fa-regular fa-circle-xmark text-2xl text-red-400 mb-2 group-hover:scale-110 transition-transform"></i>
+                                <div class="font-bold text-xs text-white">Force Light OFF</div>
+                            </button>
+
+                            <button onclick="sendOverrideCommand('AUTO')" class="p-4 bg-slate-950 hover:bg-emerald-500/10 border border-slate-800 hover:border-emerald-500/50 rounded-xl text-center group transition-all">
+                                <i class="fa-solid fa-robot text-2xl text-emerald-400 mb-2 group-hover:scale-110 transition-transform"></i>
+                                <div class="font-bold text-xs text-white">Return to Auto</div>
+                            </button>
+                        </div>
+
+                        <div class="pt-3 border-t border-slate-800 text-center text-xs text-slate-400">
+                            Current Priority Mode: <strong id="current-priority-display" class="text-amber-400">Automatic LDR Logic Active</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- SCREEN 4: OVERRIDE COMMAND LOGS -->
+                <!-- ========================================== -->
+                <div id="screen-4-logs" class="hidden space-y-4">
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
+                        <div class="p-3.5 border-b border-slate-800 flex items-center justify-between">
+                            <h3 class="text-xs font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-list-check text-amber-500"></i>
+                                Override Command Audit Logs (D2 Database Records)
+                            </h3>
+                            <span class="text-[10px] text-slate-400 font-mono bg-slate-950 px-2 py-0.5 rounded border border-slate-800">/override_command</span>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-950 text-slate-400 uppercase text-[9px] tracking-wider border-b border-slate-800 font-mono">
+                                    <tr>
+                                        <th class="p-2.5">Log ID</th>
+                                        <th class="p-2.5">User Account</th>
+                                        <th class="p-2.5">Command</th>
+                                        <th class="p-2.5">Timestamp</th>
+                                        <th class="p-2.5">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="logs-table-body" class="divide-y divide-slate-800 font-sans">
+                                    <!-- Dynamically populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- GLOBAL FOOTER -->
+        <footer class="bg-slate-950 border-t border-slate-800 py-3 px-4 text-center text-xs text-slate-500 mt-auto">
+            <p>Eulogio "Amang" Rodriguez Institute of Science and Technology • College of Engineering</p>
+            <p class="text-[10px] text-slate-600 mt-0.5">CpE 4A Group #1 Capstone Research #4 System Interface & Physical Design</p>
+        </footer>
+    </div>
+
+    <!-- CLIENT-SIDE INTEGRATED SCRIPT & THREE.JS ENGINE -->
+    <script src="system-sync.js"></script>
+    <script>
+        // System State
+        let currentUser = null;
+        let isWifiConnected = true;
+        let overrideMode = "AUTO";
+
+        // 3D Scene Objects
+        let scene, camera, renderer, controls;
+        let enclosureCover, ledLightBeam, ledPointLight, ambientLightSource;
+        let isExploded = false;
+
+        // Seeded Command Logs
+        let commandLogs = [];
+        let clockTimer = null;
+
+        // System Clock
+        function startClock() {
+            if (clockTimer !== null) return;
+            const updateClock = () => {
+                const now = new Date().toLocaleString();
+                document.getElementById('clock-display').innerText = now;
+                document.getElementById('last-updated-text').innerText = now;
+            };
+            updateClock();
+            clockTimer = setInterval(updateClock, 1000);
+        }
+
+        // Login Handler
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const role = document.getElementById('user-role').value;
+            if (!username) return;
+
+            currentUser = { username, role };
+            document.getElementById('current-user-display').innerText = `${username} (${role})`;
+            
+            document.getElementById('screen-1-login').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
+            document.getElementById('main-app').classList.add('flex');
+            
+            renderLogs();
+            startClock();
+            init3D();
+        }
+
+        // Logout Handler
+        function handleLogout() {
+            currentUser = null;
+            document.getElementById('main-app').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('flex');
+            document.getElementById('screen-1-login').classList.remove('hidden');
+        }
+
+        // Tab Navigation Switching
+        function switchTab(screenId) {
+            ['screen-2-monitoring', 'screen-3-override', 'screen-4-logs'].forEach(s => {
+                document.getElementById(s).classList.add('hidden');
+                document.getElementById(`tab-${s}`).classList.remove('text-amber-500', 'border-amber-500');
+                document.getElementById(`tab-${s}`).classList.add('hover:text-slate-200', 'border-transparent');
+            });
+
+            document.getElementById(screenId).classList.remove('hidden');
+            document.getElementById(`tab-${screenId}`).classList.add('text-amber-500', 'border-amber-500');
+            document.getElementById(`tab-${screenId}`).classList.remove('hover:text-slate-200', 'border-transparent');
+        }
+
+        // Wi-Fi Outage Simulation (FR-10)
+        function toggleWifiSimulation() {
+            SystemSync.update({ isWifiConnected: !isWifiConnected });
+        }
+
+        function updateWifiDisplay() {
+            const banner = document.getElementById('wifi-warning-banner');
+            const statusText = document.getElementById('wifi-status-text');
+            const wifiIcon = document.getElementById('wifi-icon');
+
+            if (isWifiConnected) {
+                banner.classList.add('hidden');
+                statusText.innerText = "CONNECTED";
+                statusText.className = "text-xs font-bold text-emerald-400";
+                wifiIcon.className = "fa-solid fa-wifi text-base text-emerald-400";
+            } else {
+                banner.classList.remove('hidden');
+                statusText.innerText = "DISCONNECTED";
+                statusText.className = "text-xs font-bold text-red-400";
+                wifiIcon.className = "fa-solid fa-wifi text-base text-red-400 animate-pulse";
+            }
+        }
+
+        // Send Override Command (FR-06)
+        function sendOverrideCommand(cmd) {
+            const alertBox = document.getElementById('override-alert');
+            if (!["FORCE_ON", "FORCE_OFF", "AUTO"].includes(cmd)) {
+                throw new Error(`Unsupported override command: ${cmd}`);
+            }
+            if (!isWifiConnected) {
+                alertBox.className = "p-3 rounded-lg text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20";
+                alertBox.innerText = "ERROR (FR-10): Command failed to transmit. ESP32 Wi-Fi connection is offline.";
+                alertBox.classList.remove('hidden');
+                return;
+            }
+
+            const newLog = {
+                id: `CMD-${Date.now()}`,
+                user: currentUser ? currentUser.username : "unknown",
+                command: cmd,
+                time: new Date().toLocaleString(),
+                status: "EXECUTED"
+            };
+            SystemSync.update({ overrideMode: cmd, commandLogs: [newLog, ...commandLogs] });
+
+            alertBox.className = "p-3 rounded-lg text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+            alertBox.innerText = `SUCCESS: '${cmd}' applied to the shared dashboard simulation.`;
+            alertBox.classList.remove('hidden');
+        }
+
+        // Render Logs
+        function renderLogs() {
+            const tbody = document.getElementById('logs-table-body');
+            tbody.innerHTML = commandLogs.map(log => `
+                <tr class="hover:bg-slate-800/30 transition-colors">
+                    <td class="p-2.5 font-mono text-amber-400 font-semibold">${SystemSync.escapeHtml(log.id)}</td>
+                    <td class="p-2.5 font-medium text-slate-200">${SystemSync.escapeHtml(log.user)}</td>
+                    <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[10px] bg-slate-950 border border-slate-800 font-mono text-slate-300">${SystemSync.escapeHtml(log.command)}</span></td>
+                    <td class="p-2.5 text-slate-400 font-mono">${SystemSync.escapeHtml(log.time)}</td>
+                    <td class="p-2.5"><span class="text-emerald-400 font-semibold flex items-center gap-1"><i class="fa-solid fa-circle-check text-[10px]"></i> ${SystemSync.escapeHtml(log.status)}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // REAL-TIME SYNCHRONIZATION LOGIC (3D MODEL <---> UI TELEMETRY)
+        function updateSystemLogic(publishState = true) {
+            const ambientLux = Number(document.getElementById('ambient-slider').value);
+            const batteryPct = Number(document.getElementById('battery-slider').value);
+
+            // 1. Calculate Values
+            const isDark = ambientLux < 400;
+            const adcVal = Math.round(1024 - (ambientLux/1000)*1024);
+            const battVolt = (3.0 + (batteryPct/100)*1.2).toFixed(2);
+
+            let turnOnLed = false;
+            if (overrideMode === "FORCE_ON") {
+                turnOnLed = true;
+            } else if (overrideMode === "FORCE_OFF") {
+                turnOnLed = false;
+            } else {
+                turnOnLed = isDark;
+            }
+
+            // 2. Update UI Telemetry Panel Cards
+            document.getElementById('ambient-slider-val').innerText = `${ambientLux} Lux (${isDark ? 'Dark' : 'Bright'})`;
+            document.getElementById('battery-slider-val').innerText = `${batteryPct}% (${battVolt}V)`;
+            
+            document.getElementById('led-status-text').innerText = turnOnLed ? "ON" : "OFF";
+            document.getElementById('led-status-text').className = turnOnLed ? "text-xl font-bold text-amber-400" : "text-xl font-bold text-slate-500";
+            document.getElementById('led-mode-badge').innerText = overrideMode === "AUTO" ? "Automatic" : `Manual (${overrideMode})`;
+
+            document.getElementById('ambient-status-text').innerText = isDark ? "DARK" : "BRIGHT";
+            document.getElementById('ldr-adc-value').innerText = adcVal;
+
+            // Solar Charging (FR-07)
+            const isCharging = ambientLux > 200;
+            document.getElementById('solar-status-text').innerText = isCharging ? "CHARGING" : "NOT CHARGING";
+            document.getElementById('solar-status-text').className = isCharging ? "text-lg font-bold text-emerald-400" : "text-lg font-bold text-slate-500";
+            document.getElementById('solar-harvest-text').innerText = isCharging ? "Active" : "Low Sunlight";
+
+            // Power Source Switching (FR-08)
+            const isAcBackup = batteryPct < 20;
+            document.getElementById('power-source-text').innerText = isAcBackup ? "AC-ADAPTER" : "SOLAR-BATTERY";
+            document.getElementById('power-source-text').className = isAcBackup ? "text-xs font-bold text-amber-400" : "text-xs font-bold text-emerald-400";
+            document.getElementById('ac-standby-text').innerText = isAcBackup ? "Active (Low Battery)" : "Standby (>20%)";
+
+            // Battery Telemetry (FR-05)
+            document.getElementById('battery-percentage-text').innerText = `${batteryPct}%`;
+            document.getElementById('battery-voltage-text').innerText = `${battVolt}V / 4.20V`;
+            document.getElementById('battery-bar').style.width = `${batteryPct}%`;
+
+            document.getElementById('current-priority-display').innerText = overrideMode === "AUTO" ? "Automatic LDR Logic Active" : `Manual Override Active (${overrideMode})`;
+
+            // 3. Update 3D Model Visual Elements
+            if (ambientLightSource) {
+                ambientLightSource.intensity = 0.1 + (ambientLux / 1000) * 0.7;
+            }
+
+            if (ledLightBeam && ledPointLight) {
+                if (turnOnLed) {
+                    ledLightBeam.visible = true;
+                    ledPointLight.intensity = 3;
+                } else {
+                    ledLightBeam.visible = false;
+                    ledPointLight.intensity = 0;
+                }
+            }
+
+            document.getElementById('sim-lux-badge').innerText = isDark
+                ? `${ambientLux} Lux (Dark)`
+                : `${ambientLux} Lux (Bright)`;
+
+            if (publishState) {
+                SystemSync.update({ ambientLux, batteryPct });
+            }
+        }
+
+        // THREE.JS 3D ENGINE INITIALIZATION
+        function init3D() {
+            const container = document.getElementById('canvas-container');
+            if (!container || renderer) return;
+
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x020617);
+
+            camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(28, 22, 32);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            container.appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+
+            ambientLightSource = new THREE.AmbientLight(0xffffff, 0.15);
+            scene.add(ambientLightSource);
+
+            const sunLight = new THREE.DirectionalLight(0xfff7ed, 0.8);
+            sunLight.position.set(20, 40, 20);
+            sunLight.castShadow = true;
+            scene.add(sunLight);
+
+            buildPhysicalPrototype3D();
+            updateSystemLogic();
+            animate();
+
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        function buildPhysicalPrototype3D() {
+            const group = new THREE.Group();
+
+            // Baseboard
+            const base = new THREE.Mesh(
+                new THREE.BoxGeometry(20, 0.75, 15),
+                new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.6 })
+            );
+            base.position.y = -0.375;
+            group.add(base);
+
+            const grid = new THREE.GridHelper(20, 20, 0x334155, 0x1e293b);
+            grid.position.y = 0.01;
+            group.add(grid);
+
+            // Pole
+            const pole = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.5, 0.5, 15, 32),
+                new THREE.MeshStandardMaterial({ color: 0x64748b, metalness: 0.8 })
+            );
+            pole.position.set(0, 7.5, 0);
+            group.add(pole);
+
+            // Enclosure Box
+            const box = new THREE.Mesh(
+                new THREE.BoxGeometry(10, 4, 6),
+                new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.4 })
+            );
+            box.position.set(0, 11, 0);
+            group.add(box);
+
+            // Cover Lid
+            enclosureCover = new THREE.Mesh(
+                new THREE.BoxGeometry(10.1, 0.3, 6.1),
+                new THREE.MeshStandardMaterial({ color: 0x334155, transparent: true, opacity: 0.9 })
+            );
+            enclosureCover.position.set(0, 13.15, 0);
+            group.add(enclosureCover);
+
+            // Solar Panel (Tilted)
+            const solarGroup = new THREE.Group();
+            const solarFrame = new THREE.Mesh(new THREE.BoxGeometry(7.5, 0.2, 5), new THREE.MeshStandardMaterial({ color: 0x334155 }));
+            const solarCells = new THREE.Mesh(new THREE.BoxGeometry(7.2, 0.05, 4.7), new THREE.MeshStandardMaterial({ color: 0x1e1b4b, metalness: 0.9 }));
+            solarCells.position.y = 0.1;
+            solarGroup.add(solarFrame);
+            solarGroup.add(solarCells);
+            solarGroup.rotation.x = -Math.PI / 12;
+            solarGroup.position.set(0, 13.8, 0);
+            group.add(solarGroup);
+
+            // LED Fixture & Light Beam Cone
+            const ledHousing = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 0.4, 32), new THREE.MeshStandardMaterial({ color: 0x475569 }));
+            ledHousing.position.set(0, 8.8, 0);
+            group.add(ledHousing);
+
+            const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.1, 32), new THREE.MeshBasicMaterial({ color: 0xfef08a }));
+            lens.position.set(0, 8.55, 0);
+            group.add(lens);
+
+            ledLightBeam = new THREE.Mesh(
+                new THREE.ConeGeometry(8, 9, 32, 1, true),
+                new THREE.MeshBasicMaterial({ color: 0xfef08a, transparent: true, opacity: 0.25, side: THREE.DoubleSide })
+            );
+            ledLightBeam.position.set(0, 4, 0);
+            ledLightBeam.rotation.x = Math.PI;
+            group.add(ledLightBeam);
+
+            ledPointLight = new THREE.SpotLight(0xffedd5, 3, 30, Math.PI / 4, 0.5);
+            ledPointLight.position.set(0, 8.5, 0);
+            ledPointLight.target.position.set(0, 0, 0);
+            scene.add(ledPointLight);
+            scene.add(ledPointLight.target);
+
+            scene.add(group);
+        }
+
+        function toggleExplodedView() {
+            isExploded = !isExploded;
+            enclosureCover.material.opacity = isExploded ? 0.2 : 0.9;
+            enclosureCover.position.y = isExploded ? 16 : 13.15;
+            document.getElementById('btn-explode').innerHTML = isExploded 
+                ? `<i class="fa-solid fa-box text-amber-400 mr-1"></i> Close Cover`
+                : `<i class="fa-solid fa-box-open text-amber-400 mr-1"></i> Transparent View`;
+        }
+
+        function onWindowResize() {
+            const container = document.getElementById('canvas-container');
+            if (!container || !renderer) return;
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if (controls) controls.update();
+            if (renderer && scene && camera) renderer.render(scene, camera);
+        }
+
+        SystemSync.subscribe(state => {
+            isWifiConnected = state.isWifiConnected;
+            overrideMode = state.overrideMode;
+            commandLogs = state.commandLogs;
+            document.getElementById('ambient-slider').value = state.ambientLux;
+            document.getElementById('battery-slider').value = state.batteryPct;
+            updateWifiDisplay();
+            renderLogs();
+            updateSystemLogic(false);
+        });
+    </script>
+</body>
+</html>
