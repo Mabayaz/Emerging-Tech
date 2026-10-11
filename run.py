@@ -8,8 +8,14 @@ import webbrowser
 PROJECT_DIR = Path(__file__).resolve().parent
 
 
+class NoCacheHandler(SimpleHTTPRequestHandler):
+    def end_headers(self):
+        self.send_header("Cache-Control", "no-store")
+        super().end_headers()
+
+
 def main():
-    handler = partial(SimpleHTTPRequestHandler, directory=str(PROJECT_DIR))
+    handler = partial(NoCacheHandler, directory=str(PROJECT_DIR))
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     base_url = f"http://127.0.0.1:{server.server_address[1]}"
     pages = (

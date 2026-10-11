@@ -30,23 +30,17 @@
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">User Account / Username</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
-                            <i class="fa-solid fa-user-shield text-xs"></i>
-                        </span>
-                        <input type="text" id="username" required value="admin_cpe" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-amber-500 transition-all">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500"><i class="fa-solid fa-user-shield text-xs"></i></span>
+                        <input type="text" id="username" required value="admin_cpe" autocomplete="username" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-amber-500 transition-all">
                     </div>
                 </div>
-
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Password</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
-                            <i class="fa-solid fa-key text-xs"></i>
-                        </span>
-                        <input type="password" id="password" required autocomplete="current-password" placeholder="Enter password" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-amber-500 transition-all">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500"><i class="fa-solid fa-key text-xs"></i></span>
+                        <input type="password" id="password" required value="admin123" autocomplete="current-password" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-amber-500 transition-all">
                     </div>
                 </div>
-
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">User Role Access</label>
                     <select id="user-role" class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-amber-500 transition-all">
@@ -54,9 +48,8 @@
                         <option value="Maintenance Staff">Maintenance / Laboratory Staff</option>
                     </select>
                 </div>
-
-                <button type="submit" class="w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-lg text-sm transition-all duration-150 shadow-lg shadow-amber-500/20 mt-2">
-                    <i class="fa-solid fa-right-to-bracket mr-2"></i> Access Integrated Twin & Dashboard
+                <button type="submit" id="login-button" class="w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-lg text-sm transition-all duration-150 shadow-lg shadow-amber-500/20 mt-2">
+                    <i class="fa-solid fa-right-to-bracket mr-2"></i> Log In
                 </button>
             </form>
             <p class="text-[10px] text-slate-500 text-center mt-3">Demo only: login details are not authenticated or sent to a server.</p>
@@ -415,6 +408,8 @@
             
             renderLogs();
             startClock();
+            
+            switchTab('screen-3-override');
             init3D();
         }
 
