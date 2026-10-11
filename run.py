@@ -13,7 +13,7 @@ def main():
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     base_url = f"http://127.0.0.1:{server.server_address[1]}"
     pages = (
-        f"{base_url}/Interface.html",
+        f"{base_url}/index.html",
         f"{base_url}/Prototype.html",
     )
 
